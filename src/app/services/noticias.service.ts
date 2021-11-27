@@ -12,6 +12,8 @@ export class NoticiasService {
 
   constructor( private http: HttpClient) { }
 
+
+  // Utilizamos la API de "https://newsapi.org/" donde podemos obtener y filtrar las noticias
   getTitularesPrincipales(){
     return this.http.get<RespuestasTitularesPrincipales>(`https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=8936c90d112d4bd1a0fcc298fcd39bec`);
   }
