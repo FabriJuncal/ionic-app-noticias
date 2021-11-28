@@ -1,0 +1,26 @@
+<ion-card color="dark">
+
+  <ion-card-header>
+    <ion-card-subtitle>
+      <p> {{noticia.publishedAt | date:'dd-MM-yyyy'}} </p>
+      <span class="text-primary"> 
+        {{ index + 1 }}. 
+      </span>
+      <span class="noticia-source-name">
+        {{ noticia.source.name }}
+      </span>
+    </ion-card-subtitle>
+    <ion-card-title>{{ noticia.title}}</ion-card-title>
+  </ion-card-header>
+  
+  <!-- La diferencia entre <img> y <ion-img> es que este ultimo va a cargar las imagenes a medida que vayan apareciendo en pantalla -->
+  <ion-img *ngIf="noticia.urlToImage"
+            [src]="noticia.urlToImage"></ion-img>
+
+  <ion-card-content>
+    <p>
+      {{ noticia.description }}
+    </p>
+  </ion-card-content>
+
+</ion-card>
