@@ -1,8 +1,24 @@
+
+// ================================================================================================================
+
+//  Pintamos de color blanco la fuente del Segment 
+
 ion-segment-button{
     // background-color: var( --ion-color-dark ) !important;
     color: white !important;
 }
 
+//  Pintamos de color primario que tenga la aplicación la opción que se encuentre seleccionado del Segment
+//  La variable css "--ion-color-primary" se lo puede encontrar en la ruta "src\theme\variables.scss"
+//  Se puede elegir colores de los estilos de IONIC de manera facil desde "https://ionicframework.com/docs/theming/themes"
 .segment-button-checked{
     color: var(--ion-color-primary);
+}
+
+// ================================================================================================================
+
+// Quitamos la Barra de Scroll del Segment
+::-webkit-scrollbar, *::-webkit-scrollbar{
+    display: none !important;
+    overflow: hidden;
 }

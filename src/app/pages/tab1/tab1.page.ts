@@ -18,11 +18,12 @@ export class Tab1Page implements OnInit{
   // Al iniciar la pagina ejecutamos el servicio "noticiasService" para traer los datos de los Titulares Principales
   ngOnInit(){
     this.noticiasService.getTitularesPrincipales()
-      .subscribe( res => {
-        console.log('noticias', res);
+      .subscribe( articles => {
+        console.log('noticias', articles);
 
         // Almacenamos las noticias en un Array
-        this.noticias.push(...res.articles);
+        // "...": significa que se hará una copia del array y se agregará el nuevo
+        this.noticias.push(...articles);
       });
 
 

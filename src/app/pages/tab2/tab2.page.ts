@@ -24,4 +24,9 @@ export class Tab2Page {
     this.segment.value = this.categorias[0];
   }
 
+  segmentChanged(event: any){
+    this.segment.value = event.detail.value;
+  }
+  
+
 }

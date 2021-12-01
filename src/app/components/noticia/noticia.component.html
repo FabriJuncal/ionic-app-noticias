@@ -10,14 +10,17 @@
         {{ noticia.source.name }}
       </span>
     </ion-card-subtitle>
-    <ion-card-title>{{ noticia.title}}</ion-card-title>
+    <ion-card-title
+      class="ion-padding-horizontal ion-margin-bottom"
+    >{{ noticia.title}}</ion-card-title>
   </ion-card-header>
   
   <!-- La diferencia entre <img> y <ion-img> es que este ultimo va a cargar las imagenes a medida que vayan apareciendo en pantalla -->
   <ion-img *ngIf="noticia.urlToImage"
             [src]="noticia.urlToImage"></ion-img>
 
-  <ion-card-content>
+  <ion-card-content
+  *ngIf="noticia.description">
     <p>
       {{ noticia.description }}
     </p>
