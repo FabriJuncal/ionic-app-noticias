@@ -12,7 +12,7 @@ ion-segment-button{
 //  La variable css "--ion-color-primary" se lo puede encontrar en la ruta "src\theme\variables.scss"
 //  Se puede elegir colores de los estilos de IONIC de manera facil desde "https://ionicframework.com/docs/theming/themes"
 .segment-button-checked{
-    color: var(--ion-color-primary);
+    color: var(--ion-color-primary) !important;
 }
 
 // ================================================================================================================

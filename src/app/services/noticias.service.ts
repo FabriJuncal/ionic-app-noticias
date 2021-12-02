@@ -33,4 +33,15 @@ export class NoticiasService {
       map( ({ articles }) => articles) // Formateamos la respuesta de la petición utilizando Destructuring
     );
   }
+
+  getTitularesPrincipalesPorCategoria(categoria:string):Observable<Article[]>{
+    return this.http.get<RespuestasTitularesPrincipales>(`https://newsapi.org/v2/top-headlines?country=us&category=${categoria}`,{
+      params:{
+        apiKey // Enviamos como parametro del GET la ApiKey
+      }
+    }).pipe( // Utilizamos el metodo "pipe" para utilizar la función map en la respuesta de la petición
+      // Utilizamos la función "map" para dar formato a la respuesta de la petición
+      map( ({ articles }) => articles) // Formateamos la respuesta de la petición utilizando Destructuring
+    );
+  }
 }

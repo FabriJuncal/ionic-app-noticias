@@ -1,4 +1,4 @@
-<ion-header [translucent]="true" class="ion-no-border">
+<ion-header [translucent]="true" mode="ios" class="ion-no-border">
   <ion-toolbar color="dark">
     <ion-title>
       Inicio
@@ -8,7 +8,6 @@
   <!-- Opciones seleccionables del encabezado -->
   <ion-segment scrollable 
                mode="md" 
-               color="primary"
                [value]="selectedCategory"
                (ionChange)="segmentChanged($event)">
 
@@ -24,5 +23,7 @@
 
 <ion-content [fullscreen]="true" color="dark">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+
+  <app-noticias [noticias]="noticias"></app-noticias>
+
 </ion-content>
