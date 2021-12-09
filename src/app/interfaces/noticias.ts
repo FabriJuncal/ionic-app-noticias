@@ -29,3 +29,10 @@ export interface Source {
   id?: string;
   name: string;
 }
+
+export interface NoticiasPorCategoriaYPagina {
+  [key: string]: {
+    page: number;
+    articles: Article[];
+  }
+}

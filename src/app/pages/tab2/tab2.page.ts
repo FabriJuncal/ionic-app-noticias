@@ -20,7 +20,7 @@ export class Tab2Page {
 
   constructor(private noticiasService: NoticiasService) {}
 
-  // Función de Ionic que se ejecuta el terminar de mostrar toda la página
+  /** Función de Ionic que se ejecuta el terminar de mostrar toda la página **/
   ionViewDidEnter() {
 
     // Seleccionamos la 1ra opción como predeterminada en las opciones seleccionables del encabezado
@@ -29,14 +29,16 @@ export class Tab2Page {
     // Llamamos a la función "cargarNoticias" para obtener las noticias de la categoria seleccionada
     this.noticiasService.getTitularesPrincipalesPorCategoria(this.segment.value)
       .subscribe(articles => {
+
       console.log(articles);
 
       // Cargamos el array de noticias con las noticias obtenidas de la API
-      this.noticias = [...this.noticias, ...articles];
+      this.noticias = [...this.noticias];
     });
 
   }
 
+  /** Función del Componente de Ionic que se ejecuta cada ves que seleccionamos una opción del Segmento **/
   segmentChanged(event: any){
     this.segment.value = event.detail.value;
 
