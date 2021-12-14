@@ -2,13 +2,39 @@
 
   <ion-card-header>
     <ion-card-subtitle>
-      <p> {{noticia.publishedAt | date:'dd-MM-yyyy'}} </p>
-      <span class="text-primary"> 
-        {{ index + 1 }}. 
-      </span>
-      <span class="noticia-source-name">
-        {{ noticia.source.name }}
-      </span>
+
+      <ion-row class="ion-align-items-center">
+
+        <ion-col class="ion-padding-horizontal">
+          <p> {{noticia.publishedAt | date:'dd-MM-yyyy'}} </p>
+        </ion-col>
+
+        <!-- ion-text: Ordena de manera Horizontal -->
+        <ion-col class="ion-text-right">
+          <ion-button (click)="onClick()" fill="clear">
+            <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+
+      <!-- ion-align-items: Ordena de manera Vertical -->
+      <ion-row class="ion-align-items-center" 
+               (click)="openArticle()">
+
+        <ion-col>
+          <span class="text-primary"> 
+            {{ index + 1 }}. 
+          </span>
+          <span class="noticia-source-name">
+            {{ noticia.source.name }}
+          </span>
+        </ion-col>
+
+      </ion-row>
+
+
+
     </ion-card-subtitle>
     <ion-card-title
       class="ion-padding-horizontal ion-margin-bottom"
@@ -17,7 +43,9 @@
   
   <!-- La diferencia entre <img> y <ion-img> es que este ultimo va a cargar las imagenes a medida que vayan apareciendo en pantalla -->
   <ion-img *ngIf="noticia.urlToImage"
-            [src]="noticia.urlToImage"></ion-img>
+            [src]="noticia.urlToImage"
+            (click)="openArticle()">
+  </ion-img>
 
   <ion-card-content
   *ngIf="noticia.description">

@@ -18,7 +18,7 @@ const apiUrl = environment.apiUrl;
 })
 export class NoticiasService {
 
-  private NoticiasPorCategoriaYPagina: NoticiasPorCategoriaYPagina = {}
+  private noticiasPorCategoriaYPagina: NoticiasPorCategoriaYPagina = {};
 
   constructor( private http: HttpClient) { }
 
@@ -28,10 +28,10 @@ export class NoticiasService {
 
     return this.http.get<T>(`${ apiUrl }${ endpoint }`,{
       params: {
-        apiKey: apiKey,
+        apiKey,
         country: 'us'
       }
-    })
+    });
   }
 
 
@@ -40,7 +40,7 @@ export class NoticiasService {
   // :Observable<Article[] => Definimos el tipo de respuesta de la función y declaramos
   //  que utilizará la Interfaz de "Article" y que será de tipo Array
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  getTitularesPrincipales():Observable<Article[]>{
+  getTitularesPrincipales(): Observable<Article[]>{
 
     /** Mostramos la categoría "Business"  utilizando la función que muestra las Noticias por Categoría
      *  y tiene la función de no recargar los datos si estas noticias ya se obtuvieron anteriormente**/
@@ -65,12 +65,12 @@ export class NoticiasService {
     }
 
     /** Si no se quiere cargar mas Noticias y ya existen cargadas, se muestra las Noticias almacenadas (en el objeto) en memoria **/
-    if( this.NoticiasPorCategoriaYPagina[categoria] ){
+    if( this.noticiasPorCategoriaYPagina[categoria] ){
 
       // Función RxJS llamada "of()", esta función nos permite crear un Observable
       // para obtener una respuesta simulada sin crear un backend real, ya que los datos
       // que estamos obteniendo se encuentran en la memoria del dispositivo y no en un servidor.
-      return of(this.NoticiasPorCategoriaYPagina[categoria].articles);
+      return of(this.noticiasPorCategoriaYPagina[categoria].articles);
     }
 
     /** Si no se quiere cargar noticias nuevas, pero nose encuentran cargadas en memoria, se muestras noticias nuevas **/
@@ -87,35 +87,35 @@ export class NoticiasService {
   /** Obtiene las Noticias Por Categiría desde la API **/
   private getNoticiasPorCategoria( categoria: string ): Observable<Article[]>{
 
-    if( Object.keys( this.NoticiasPorCategoriaYPagina).includes(categoria) ){
+    if( Object.keys( this.noticiasPorCategoriaYPagina).includes(categoria) ){
       // Si existe
     }else{
       // No existe
 
-      this.NoticiasPorCategoriaYPagina[categoria] = {
+      this.noticiasPorCategoriaYPagina[categoria] = {
         page: 0,
         articles: []
       };
     }
 
-    const page = this.NoticiasPorCategoriaYPagina[categoria].page + 1;
+    const page = this.noticiasPorCategoriaYPagina[categoria].page + 1;
 
     return this.executeQuery<RespuestasTitularesPrincipales>(`/top-headlines?category=${categoria}&page=${page}`)
     .pipe(
       map( ({ articles }) => {
 
         if( articles.length === 0 ){
-          return this.NoticiasPorCategoriaYPagina[categoria].articles;
-        } 
+          return this.noticiasPorCategoriaYPagina[categoria].articles;
+        };
 
 
-        this.NoticiasPorCategoriaYPagina[categoria] = {
+        this.noticiasPorCategoriaYPagina[categoria] = {
           page,
           // eslint-disable-next-line max-len
-          articles: [...this.NoticiasPorCategoriaYPagina[categoria].articles, ...articles] // Destructuramos los articulos anteriores y se agrega los nuevos
-        }
+          articles: [...this.noticiasPorCategoriaYPagina[categoria].articles, ...articles] // Destructuramos los articulos anteriores y se agrega los nuevos
+        };
 
-        return  this.NoticiasPorCategoriaYPagina[categoria].articles;
+        return  this.noticiasPorCategoriaYPagina[categoria].articles;
 
       })
     );
