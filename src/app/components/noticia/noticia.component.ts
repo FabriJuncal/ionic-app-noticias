@@ -3,9 +3,10 @@ import { Component, Input } from '@angular/core';
 import { Article } from '../../interfaces/noticias';
 
 // Importamos el plugin para poder redireccionar a otra pagina desde la app
+// Pagina Oficial del Plugin: https://capacitorjs.com/docs/apis/browser
 import { Browser } from '@capacitor/browser';
 // Importamos el plugin para poder identificar el dispositivo en el cual se esta utilizando la app
-import { Platform } from '@ionic/angular';
+import { ActionSheetController, Platform } from '@ionic/angular';
 
 
 
@@ -21,11 +22,10 @@ export class NoticiaComponent{
   @Input() noticia: Article;
   @Input() index: number;
 
-  constructor(private platform: Platform) { }
-
-  onClick(){
-    console.log('Click en noticia: ');
-  }
+  constructor(
+    private platform: Platform,
+    private actionSheetCtrl: ActionSheetController
+  ) { }
 
   // Metodo para abrir la noticia en una nueva pagina
   openArticle(){
@@ -44,6 +44,44 @@ export class NoticiaComponent{
     window.open( this.noticia.url, '_blank' );
 
 
+  }
+
+  // Metdo para abrir las opciones en el Action Sheet
+  async onOpenMenu(){
+
+    const actionSheet = await this.actionSheetCtrl.create({
+      // Titulo del Action Sheet
+      header: 'Opciones',
+      // Boton para abrir la noticia en una nueva pagina
+      buttons: [
+        {
+          text: 'Compartir ',
+          icon: 'share-social-outline',
+          handler: () => this.onShareArticle()
+        },
+        {
+          text: 'Favorito',
+          icon: 'heart-outline',
+          handler: () => this.onToggleFavorite()
+        },
+        {
+          text: 'Cancelar',
+          icon: 'close-outline',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+
+  }
+
+  onShareArticle(){
+    console.log('Share');
+  }
+
+  onToggleFavorite(){
+    console.log('Favorite');
   }
 
 }
