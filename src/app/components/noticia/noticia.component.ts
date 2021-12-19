@@ -2,11 +2,14 @@ import { Component, Input } from '@angular/core';
 
 import { Article } from '../../interfaces/noticias';
 
+// Importamos el plugin para poder identificar el dispositivo en el cual se esta utilizando la app
+import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angular';
+
 // Importamos el plugin para poder redireccionar a otra pagina desde la app
 // Pagina Oficial del Plugin: https://capacitorjs.com/docs/apis/browser
 import { Browser } from '@capacitor/browser';
-// Importamos el plugin para poder identificar el dispositivo en el cual se esta utilizando la app
-import { ActionSheetController, Platform } from '@ionic/angular';
+// Importamos el plugin para poder compartir contenido a otras aplicaciones
+import { Share } from '@capacitor/share';
 
 
 
@@ -46,38 +49,58 @@ export class NoticiaComponent{
 
   }
 
-  // Metdo para abrir las opciones en el Action Sheet
+  // Metodo para abrir las opciones en el Action Sheet
   async onOpenMenu(){
+
+    console.log(this.platform.is('capacitor'));
+
+    const btnsActionSheet: ActionSheetButton[] = [
+      {
+        text: 'Favorito',
+        icon: 'heart-outline',
+        handler: () => this.onToggleFavorite()
+      },
+      {
+        text: 'Cancelar',
+        icon: 'close-outline',
+        role: 'cancel'
+      }
+    ];
+
+    const shareBtn = {
+      text: 'Compartir ',
+      icon: 'share-social-outline',
+      handler: () => this.onShareArticle()
+    }
+
+    if(this.platform.is('capacitor')){
+      btnsActionSheet.unshift(shareBtn);
+    }
 
     const actionSheet = await this.actionSheetCtrl.create({
       // Titulo del Action Sheet
       header: 'Opciones',
       // Boton para abrir la noticia en una nueva pagina
-      buttons: [
-        {
-          text: 'Compartir ',
-          icon: 'share-social-outline',
-          handler: () => this.onShareArticle()
-        },
-        {
-          text: 'Favorito',
-          icon: 'heart-outline',
-          handler: () => this.onToggleFavorite()
-        },
-        {
-          text: 'Cancelar',
-          icon: 'close-outline',
-          role: 'cancel'
-        }
-      ]
+      buttons: btnsActionSheet
     });
 
     await actionSheet.present();
 
   }
 
-  onShareArticle(){
-    console.log('Share');
+  // Metodo para compartir el contenido de la noticia en otras aplicaciones
+  async onShareArticle(){
+
+    const { title, description, url } = this.noticia;
+
+    console.log(this.noticia);
+
+    await Share.share({
+      title: title,
+      text: description,
+      url: url
+    });
+
   }
 
   onToggleFavorite(){
