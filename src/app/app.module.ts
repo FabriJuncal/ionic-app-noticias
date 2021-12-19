@@ -15,19 +15,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [
-      BrowserModule,
-      IonicModule.forRoot(),
-      AppRoutingModule,
-      HttpClientModule, // Importamos el modulo "HttpClientModule"
-
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
+        HttpClientModule, // Importamos el modulo "HttpClientModule"
     ],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    // InAppBrowser    // Importamos el plugin para poder redireccionar a otra pagina desde la app
-  ],
-  bootstrap: [AppComponent],
+    providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+        // InAppBrowser    // Importamos el plugin para poder redireccionar a otra pagina desde la app
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
