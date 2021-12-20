@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
 
-import { Article } from '../../interfaces/noticias';
-
 // Importamos el plugin para poder identificar el dispositivo en el cual se esta utilizando la app
 import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angular';
 
@@ -11,6 +9,11 @@ import { Browser } from '@capacitor/browser';
 // Importamos el plugin para poder compartir contenido a otras aplicaciones
 import { Share } from '@capacitor/share';
 
+// Importamos la Interfaz del Articulo
+import { Article } from '../../interfaces/noticias';
+
+// Importamos el servicio para poder guardar y eliminar los articulos en el Local Storage
+import { StorageService } from '../../services/storage.service';
 
 
 
@@ -27,7 +30,8 @@ export class NoticiaComponent{
 
   constructor(
     private platform: Platform,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private storageService: StorageService
   ) { }
 
   // Metodo para abrir la noticia en una nueva pagina
@@ -52,8 +56,8 @@ export class NoticiaComponent{
   // Metodo para abrir las opciones en el Action Sheet
   async onOpenMenu(){
 
-    console.log(this.platform.is('capacitor'));
 
+    // Creamos los botónes que tendrá el Action Sheet
     const btnsActionSheet: ActionSheetButton[] = [
       {
         text: 'Favorito',
@@ -73,6 +77,7 @@ export class NoticiaComponent{
       handler: () => this.onShareArticle()
     }
 
+    // Si en el dispositivo se utiliza capacitor se agrega el boton de compartir
     if(this.platform.is('capacitor')){
       btnsActionSheet.unshift(shareBtn);
     }
@@ -91,10 +96,13 @@ export class NoticiaComponent{
   // Metodo para compartir el contenido de la noticia en otras aplicaciones
   async onShareArticle(){
 
+    // Destructuramos el objeto noticia para poder acceder a sus propiedades
     const { title, description, url } = this.noticia;
 
     console.log(this.noticia);
 
+    // Ejecutamos el plugin Share para poder compartir el contenido de la noticia.
+    // El metodo .share() hace que se muestre el modal de compartir en otras aplicaciones
     await Share.share({
       title: title,
       text: description,
@@ -103,8 +111,11 @@ export class NoticiaComponent{
 
   }
 
+  // Metodo para guardar y eliminar los datos en el Local Storage
   onToggleFavorite(){
-    console.log('Favorite');
+    // Guardamos o eliminamos el articulo en el Local Storage
+    this.storageService.saveRemoveArticle(this.noticia);
+    
   }
 
 }
