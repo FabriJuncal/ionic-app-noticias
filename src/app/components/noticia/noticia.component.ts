@@ -56,12 +56,15 @@ export class NoticiaComponent{
   // Metodo para abrir las opciones en el Action Sheet
   async onOpenMenu(){
 
+    // Verificamos si el artituclo ya esta guardado en Favoritos y obtenemos un valo booleano
+    const articleInFavorite = this.storageService.articleInFavorites(this.noticia);
+
 
     // Creamos los botónes que tendrá el Action Sheet
     const btnsActionSheet: ActionSheetButton[] = [
       {
-        text: 'Favorito',
-        icon: 'heart-outline',
+        text: articleInFavorite ? 'Remover Favorito' :'Favorito',
+        icon: articleInFavorite ? 'heart' : 'heart-outline',
         handler: () => this.onToggleFavorite()
       },
       {
