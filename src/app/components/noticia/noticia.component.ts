@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 // Importamos el plugin para poder identificar el dispositivo en el cual se esta utilizando la app
-import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angular';
+import { ActionSheetButton, ActionSheetController, Platform, ToastController } from '@ionic/angular';
 
 // Importamos el plugin para poder redireccionar a otra pagina desde la app
 // Pagina Oficial del Plugin: https://capacitorjs.com/docs/apis/browser
@@ -28,11 +28,35 @@ export class NoticiaComponent{
   @Input() noticia: Article;
   @Input() index: number;
 
+  // Varible donde se almacenará el valor booleano de si el articulo esta guardado en Favoritos
+  articleInFavorite: boolean;
+
   constructor(
     private platform: Platform,
     private actionSheetCtrl: ActionSheetController,
+    private toastController: ToastController,
     private storageService: StorageService
   ) { }
+
+
+  // Esta función es la que mostrará el mensaje en el Toast
+  async presentToast(message: string) {
+    // con el "toastController" podremos configurar las propiedades del Toast para que se visualice como queramos
+    const toast = await this.toastController.create({
+      message,       // Mensaje que se va a mostrar, hacemos referencia al parametro de la función
+      duration: 2000, // Duración que se va  amostrar el mensaje en milisegundos
+      buttons: [
+        {
+          side: 'end',
+          text: 'Deshacer',
+          handler: () => {
+            this.onToggleFavorite()
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
 
   // Metodo para abrir la noticia en una nueva pagina
   openArticle(){
@@ -57,15 +81,22 @@ export class NoticiaComponent{
   async onOpenMenu(){
 
     // Verificamos si el artituclo ya esta guardado en Favoritos y obtenemos un valo booleano
-    const articleInFavorite = this.storageService.articleInFavorites(this.noticia);
+    this.articleInFavorite = this.storageService.articleInFavorites(this.noticia);
 
 
     // Creamos los botónes que tendrá el Action Sheet
     const btnsActionSheet: ActionSheetButton[] = [
       {
-        text: articleInFavorite ? 'Remover Favorito' :'Favorito',
-        icon: articleInFavorite ? 'heart' : 'heart-outline',
-        handler: () => this.onToggleFavorite()
+        text: this.articleInFavorite ? 'Remover Favorito' :'Favorito',
+        icon: this.articleInFavorite ? 'heart' : 'heart-outline',
+        handler: () => {
+          this.onToggleFavorite()
+
+          let message = this.articleInFavorite ? 'Articulo removido de Favoritos' : 'Articulo agregado a Favoritos';
+
+          // Al presionar en el botón de "Favoritos", se mostrará el mensaje de "Guardado en Favoritos"
+          this.presentToast(message);
+        }
       },
       {
         text: 'Cancelar',
