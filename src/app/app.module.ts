@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 
 // Importamos este modulo para poder realizar peticiones a alguans API's
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 // Importamos el plugin para poder redireccionar a otra pagina desde la app
 // import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
 
@@ -20,7 +22,13 @@ import { HttpClientModule } from '@angular/common/http';
         BrowserModule,
         IonicModule.forRoot(),
         AppRoutingModule,
-        HttpClientModule, // Importamos el modulo "HttpClientModule"
+        HttpClientModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: environment.production,
+          // Register the ServiceWorker as soon as the app is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        }), // Importamos el modulo "HttpClientModule"
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
