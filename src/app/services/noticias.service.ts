@@ -9,6 +9,7 @@ import { RespuestasTitularesPrincipales, Article, NoticiasPorCategoriaYPagina } 
 // Importamos el operador map, de los operadores de RXJS
 import{ map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { storedArticlesByCategory } from '../../assets/data/mock-news';
 
 const apiKey = environment.apiKey;
 const apiUrl = environment.apiUrl;
@@ -18,7 +19,7 @@ const apiUrl = environment.apiUrl;
 })
 export class NoticiasService {
 
-  private noticiasPorCategoriaYPagina: NoticiasPorCategoriaYPagina = {};
+  private noticiasPorCategoriaYPagina: NoticiasPorCategoriaYPagina = storedArticlesByCategory;
 
   constructor( private http: HttpClient) { }
 
@@ -58,6 +59,8 @@ export class NoticiasService {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   getTitularesPrincipalesPorCategoria(categoria: string, cargarMas: boolean = false): Observable<Article[]>{
 
+
+    return of(this.noticiasPorCategoriaYPagina[categoria].articles);
 
     /** Si que quiere cargar mas Noticias, se realiza una petición a la API **/
     if( cargarMas ){
