@@ -111,10 +111,10 @@ export class NoticiaComponent{
       handler: () => this.onShareArticle()
     }
 
-    // Si en el dispositivo se utiliza capacitor se agrega el boton de compartir
-    if(this.platform.is('capacitor')){
+    // // Si en el dispositivo se utiliza capacitor se agrega el boton de compartir
+    // if(this.platform.is('capacitor')){
       btnsActionSheet.unshift(shareBtn);
-    }
+    // }
 
     const actionSheet = await this.actionSheetCtrl.create({
       // Titulo del Action Sheet
